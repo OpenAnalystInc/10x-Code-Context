@@ -1,0 +1,68 @@
+{
+  "name": "10x-code",
+  "version": "2.0.0",
+  "description": "Programming-first context engine for Claude Code — TypeScript-powered codebase indexing, dependency graphing, symbol-level search, and zero-token context injection via hooks.",
+  "bin": {
+    "10x-code": "bin/cli.js",
+    "ccs": "dist/cli.js",
+    "ccs-install": "bin/cli.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "build:watch": "tsc --watch",
+    "prepublishOnly": "npm run build",
+    "postinstall": "node bin/cli.js init 2>/dev/null || true"
+  },
+  "files": [
+    "bin/",
+    "dist/",
+    "statusline/",
+    "skills/",
+    "agents/",
+    "templates/",
+    "references/",
+    "hooks/",
+    ".mcp.json",
+    "CLAUDE.md",
+    "README.md",
+    "LICENSE",
+    "SKILLS-TREE.md",
+    "AGENTS-INDEX.md",
+    "manifest.json"
+  ],
+  "keywords": [
+    "claude-code",
+    "context-engineering",
+    "codebase-indexing",
+    "token-optimization",
+    "dependency-graph",
+    "symbol-search",
+    "programming-first",
+    "zero-token",
+    "agent-skill",
+    "mcp",
+    "ai-coding",
+    "claude",
+    "anthropic"
+  ],
+  "author": {
+    "name": "10x.in",
+    "url": "https://10x.in"
+  },
+  "license": "SEE LICENSE IN LICENSE",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/10x-Anit/10x-Code-Context.git"
+  },
+  "homepage": "https://10x.in",
+  "bugs": {
+    "url": "https://github.com/10x-Anit/10x-Code-Context/issues"
+  },
+  "engines": {
+    "node": ">=16"
+  },
+  "devDependencies": {
+    "typescript": "^5.5.0",
+    "@types/node": "^20.0.0"
+  }
+}
