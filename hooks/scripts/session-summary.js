@@ -33,6 +33,8 @@ try {
 
 function findEngine() {
   const candidates = [
+    // Installed via npm — ~/.claude/skills/_ccs/engine/cli.js (most common)
+    path.join(require('os').homedir(), '.claude', 'skills', '_ccs', 'engine', 'cli.js'),
     path.join(__dirname, '..', '..', 'dist', 'cli.js'),
     path.join(process.cwd(), 'node_modules', '.bin', 'ccs'),
     path.join(process.cwd(), 'dist', 'cli.js'),

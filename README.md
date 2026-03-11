@@ -204,15 +204,20 @@ This provides 6 MCP tools: skill info, all 23 command docs, OS-specific install 
 
 ## Hooks System
 
-Automated lifecycle hooks for session management:
+Automated lifecycle hooks for session management. **All hooks are Node.js** — fully cross-platform (Windows, Mac, Linux), zero bash dependency.
 
 | Hook | Trigger | What It Does |
 |------|---------|-------------|
-| `path-guard.sh` | PreToolUse | Blocks writes to immutable paths, warns on guarded paths |
-| `session-orient.sh` | SessionStart | Injects workspace tree, goals, conditions, maintenance signals |
-| `write-validate.sh` | PostToolUse | Validates YAML frontmatter on note files |
-| `auto-commit.sh` | PostToolUse | Auto-commits changes to git after writes |
-| `session-capture.sh` | Stop | Saves session state, commits artifacts |
+| `path-guard.js` | PreToolUse | Blocks writes to immutable paths, warns on guarded paths |
+| `session-orient.js` | SessionStart | Injects workspace tree, goals, conditions, maintenance signals |
+| `session-summary.js` | SessionStart | Injects compact project summary for prompt cache hits |
+| `context-inject.js` | UserPromptSubmit | Injects relevant context on every query via CCS engine |
+| `index-update.js` | PostToolUse | Incrementally updates index after file writes/edits |
+| `write-validate.js` | PostToolUse | Validates YAML frontmatter on note files |
+| `auto-commit.js` | PostToolUse | Auto-commits changes to git after writes |
+| `session-capture.js` | Stop | Saves session state, commits artifacts |
+
+Hooks are automatically registered in `~/.claude/settings.json` during installation with absolute `node` paths — no PATH dependency.
 
 ## Generated Files
 
@@ -250,7 +255,7 @@ All context files are stored in `.ccs/` (add to `.gitignore`):
 ├── SKILLS-TREE.md      # Master skill index
 ├── AGENTS-INDEX.md     # Agent lookup reference
 ├── CLAUDE.md           # Plugin orchestrator
-├── package.json        # v2.0.0
+├── package.json        # v2.0.2
 └── LICENSE             # Proprietary
 ```
 
@@ -272,5 +277,5 @@ See [LICENSE](LICENSE) for full terms. For licensing inquiries, contact the 10x 
 
 <p align="center">
   <sub>Built with precision by the <strong>10x Team</strong> at <a href="https://10x.in">10x.in</a></sub><br/>
-  <sub>10x-Code v2.0.0</sub>
+  <sub>10x-Code v2.0.2</sub>
 </p>

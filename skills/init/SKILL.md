@@ -22,11 +22,11 @@ Index the codebase using the CCS TypeScript engine. Zero AI exploration — the 
 
 ## Engine Output (injected automatically)
 
-!`ccs index 2>&1 || npx 10x-Code index 2>&1 || echo "CCS engine not found. Run: npm install -g 10x-Code"`
+!`ccs index 2>&1 || node $HOME/.claude/skills/_ccs/engine/cli.js index 2>&1 || npx 10x-Code index 2>&1 || echo "CCS engine not found. Run: npm install -g 10x-Code"`
 
 ## After Indexing
 
-!`ccs summary 2>/dev/null`
+!`ccs summary 2>/dev/null || node $HOME/.claude/skills/_ccs/engine/cli.js summary 2>/dev/null`
 
 ## What to Tell the User
 
@@ -47,4 +47,4 @@ Available commands:
 - `ccs watch` — auto-update index on file changes
 
 ---
-*10x-Code v2.0.0*
+*10x-Code v2.0.2*

@@ -1,5 +1,5 @@
 {
-  "description": "CCS v2 hooks — engine-powered context injection, auto-indexing, path guard, session lifecycle",
+  "description": "CCS v2 hooks — engine-powered context injection, auto-indexing, path guard, session lifecycle. All Node.js — cross-platform.",
   "hooks": {
     "SessionStart": [
       {
@@ -11,7 +11,7 @@
           },
           {
             "type": "command",
-            "command": "${CLAUDE_PLUGIN_ROOT}/hooks/scripts/session-orient.sh",
+            "command": "node ${CLAUDE_PLUGIN_ROOT}/hooks/scripts/session-orient.js",
             "timeout": 10
           }
         ]
@@ -34,7 +34,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "${CLAUDE_PLUGIN_ROOT}/hooks/scripts/path-guard.sh",
+            "command": "node ${CLAUDE_PLUGIN_ROOT}/hooks/scripts/path-guard.js",
             "timeout": 5
           }
         ]
@@ -44,7 +44,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "${CLAUDE_PLUGIN_ROOT}/hooks/scripts/path-guard.sh",
+            "command": "node ${CLAUDE_PLUGIN_ROOT}/hooks/scripts/path-guard.js",
             "timeout": 5
           }
         ]
@@ -54,7 +54,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "${CLAUDE_PLUGIN_ROOT}/hooks/scripts/path-guard.sh",
+            "command": "node ${CLAUDE_PLUGIN_ROOT}/hooks/scripts/path-guard.js",
             "timeout": 5
           }
         ]
@@ -64,7 +64,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "${CLAUDE_PLUGIN_ROOT}/hooks/scripts/path-guard.sh",
+            "command": "node ${CLAUDE_PLUGIN_ROOT}/hooks/scripts/path-guard.js",
             "timeout": 5
           }
         ]
@@ -76,7 +76,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "${CLAUDE_PLUGIN_ROOT}/hooks/scripts/write-validate.sh",
+            "command": "node ${CLAUDE_PLUGIN_ROOT}/hooks/scripts/write-validate.js",
             "timeout": 5
           },
           {
@@ -87,7 +87,7 @@
           },
           {
             "type": "command",
-            "command": "${CLAUDE_PLUGIN_ROOT}/hooks/scripts/auto-commit.sh",
+            "command": "node ${CLAUDE_PLUGIN_ROOT}/hooks/scripts/auto-commit.js",
             "timeout": 5,
             "async": true
           }
@@ -110,7 +110,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "${CLAUDE_PLUGIN_ROOT}/hooks/scripts/session-capture.sh",
+            "command": "node ${CLAUDE_PLUGIN_ROOT}/hooks/scripts/session-capture.js",
             "timeout": 15
           }
         ]

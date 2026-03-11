@@ -12,7 +12,7 @@ const isProjectOnly = flags.includes('--project') || flags.includes('-p');
 const PKG_DIR = path.resolve(__dirname, '..');
 const CWD = process.cwd();
 const HOME = os.homedir();
-const VERSION = '2.0.0';
+const VERSION = '2.0.2';
 
 // Terminal colors
 const R = '\x1b[0m';
@@ -174,6 +174,59 @@ function installSkillsAndResources(targetBase) {
   }
 }
 
+function installHooks(targetBase) {
+  // Register all hooks in ~/.claude/settings.json with absolute node paths
+  // All hooks are Node.js — zero bash dependency, cross-platform
+  const settingsPath = path.join(HOME, '.claude', 'settings.json');
+  let settings = {};
+  if (fs.existsSync(settingsPath)) {
+    try { settings = JSON.parse(fs.readFileSync(settingsPath, 'utf8')); } catch (e) {}
+  }
+
+  const nodeBin = process.execPath;
+  const hooksBase = path.join(targetBase, 'skills', '_ccs', 'hooks', 'scripts');
+
+  const hookDefs = {
+    SessionStart: [
+      { type: 'command', command: `${nodeBin} ${path.join(hooksBase, 'session-summary.js')}`, timeout: 10 },
+      { type: 'command', command: `${nodeBin} ${path.join(hooksBase, 'session-orient.js')}`, timeout: 10 },
+    ],
+    UserPromptSubmit: [
+      { type: 'command', command: `${nodeBin} ${path.join(hooksBase, 'context-inject.js')}`, timeout: 10 },
+    ],
+    PreToolUse: [
+      { matcher: 'Write', hooks: [{ type: 'command', command: `${nodeBin} ${path.join(hooksBase, 'path-guard.js')}`, timeout: 5 }] },
+      { matcher: 'Edit', hooks: [{ type: 'command', command: `${nodeBin} ${path.join(hooksBase, 'path-guard.js')}`, timeout: 5 }] },
+      { matcher: 'MultiEdit', hooks: [{ type: 'command', command: `${nodeBin} ${path.join(hooksBase, 'path-guard.js')}`, timeout: 5 }] },
+      { matcher: 'Bash', hooks: [{ type: 'command', command: `${nodeBin} ${path.join(hooksBase, 'path-guard.js')}`, timeout: 5 }] },
+    ],
+    PostToolUse: [
+      {
+        matcher: 'Write',
+        hooks: [
+          { type: 'command', command: `${nodeBin} ${path.join(hooksBase, 'write-validate.js')}`, timeout: 5 },
+          { type: 'command', command: `${nodeBin} ${path.join(hooksBase, 'index-update.js')}`, timeout: 10, async: true },
+          { type: 'command', command: `${nodeBin} ${path.join(hooksBase, 'auto-commit.js')}`, timeout: 5, async: true },
+        ]
+      },
+      {
+        matcher: 'Edit',
+        hooks: [
+          { type: 'command', command: `${nodeBin} ${path.join(hooksBase, 'index-update.js')}`, timeout: 10, async: true },
+        ]
+      },
+    ],
+    Stop: [
+      { type: 'command', command: `${nodeBin} ${path.join(hooksBase, 'session-capture.js')}`, timeout: 15 },
+    ],
+  };
+
+  if (!settings.hooks) settings.hooks = {};
+  settings.hooks = { ...settings.hooks, ...hookDefs };
+  fs.writeFileSync(settingsPath, JSON.stringify(settings, null, 2) + '\n');
+  success(`${B}12 hooks${R} registered in ~/.claude/settings.json (all Node.js)`);
+}
+
 function installStatusline() {
   const claudeDir = path.join(HOME, '.claude');
   if (!fs.existsSync(claudeDir)) fs.mkdirSync(claudeDir, { recursive: true });
@@ -269,6 +322,9 @@ function initGlobal() {
   const globalClaudeDir = path.join(HOME, '.claude');
   installSkillsAndResources(globalClaudeDir);
 
+  // Register hooks in ~/.claude/settings.json
+  installHooks(globalClaudeDir);
+
   // Statusline (always global — ~/.claude/)
   installStatusline();
 
@@ -323,6 +379,9 @@ function initProject() {
   // Install skills + resources to ./.claude/
   const projectClaudeDir = path.join(CWD, '.claude');
   installSkillsAndResources(projectClaudeDir);
+
+  // Register hooks in ~/.claude/settings.json (hooks are always global)
+  installHooks(path.join(HOME, '.claude'));
 
   // Statusline always goes to ~/.claude/ (it's a global Claude Code setting)
   installStatusline();
